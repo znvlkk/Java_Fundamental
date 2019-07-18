@@ -1,6 +1,6 @@
-package java_20190716;
+package java_20190718;
 
-public class CalendarDemo {
+public class CalendarArrayDemo {
 	public static void main(String[] args) {
 		/*
 		 * 
@@ -11,8 +11,8 @@ public class CalendarDemo {
 		 */
 
 		int year = 2020;
-		int month = 3;
-		int day = 15;
+		int month = 12;
+		int day = 25;
 		// preYear => 2018년도
 		int preYear = year - 1;
 		// preMonth => 2019년 11월
@@ -21,10 +21,26 @@ public class CalendarDemo {
 
 		// 2018년도까지 총일 수 구하기
 		totalCount = preYear * 365 + (preYear / 4 - preYear / 100 + preYear / 400);
+		
+		int [] monthArray = {31,28,31,30,31,30,31,31,30,31,30,31};
+		
+		/*
+		boolean isLeafYear = year % 4 == 0 && (year % 100 != 0 || year % 400 == 0);
 
+		if(isLeafYear) {
+			monthArray[1] = 29;
+		}
+		*/ //boolean사용시
+		
+		if(year % 4 == 0 && (year % 100 != 0 || year % 400 == 0)) {
+			monthArray[1] = 29;
+		}
+		
 		// 2019년도 11월까지 합 구하기
-		totalCount += 31 + 29;
-
+		for(int i=0; i<preMonth; i++) {
+			totalCount += monthArray[i];
+		}
+		
 		totalCount += day;
 
 		int dayOfWeek = totalCount % 7;
