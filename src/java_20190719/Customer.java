@@ -1,10 +1,12 @@
 package java_20190719;
 
 public class Customer {
-	String name;
-	String email;
-	String phone;
-	int age;
-	double balance;
-	boolean isReleased;
+	public String name;
+	public String email;
+	public String phone;
+	public int age;
+	public double balance;
+	public boolean isReleased;
+	
+	public static double interestRate;
 }
