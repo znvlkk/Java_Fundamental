@@ -1,4 +1,4 @@
-/*package java_20190730;
+package java_20190730;
 
 import java.util.ArrayList;
 
@@ -23,7 +23,7 @@ class Product {
 public class ListDemo {
 	public static void main(String[] args) {
 		// ArrayList : 순서가있고, 객체의 중복을 허용한다
-		ArrayList list = new ArrayList();
+		ArrayList<Product> list = new ArrayList<Product>();
 		Product p1 = new Product(1, "treea", 2500);
 		Product p2 = new Product(2, "푸라면", 3500);
 		Product p3 = new Product(3, "Soul우유", 39800);
@@ -53,4 +53,3 @@ public class ListDemo {
 		}
 	}
 }
-*/

@@ -51,6 +51,7 @@ public class MemberManagementDemo {
 	private void insert() {
 		String id = console("아이디를 입력하세요>");
 		String name = console("이름을 입력하세요>");
+		
 		Member m = new Member(id, name);
 		list.add(m);
 		
