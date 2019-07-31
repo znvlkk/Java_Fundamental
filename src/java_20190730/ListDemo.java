@@ -33,23 +33,35 @@ public class ListDemo {
 		list.add(p2); // 할당
 		list.add(p3); // 할당
 		list.add(p4); // 할당
-		
-		//모두삭제
-		for(int i =0; i<list.size(); i++) {
-			
-			list.remove(i--);
-			
+
+		// 모두삭제
+		for (int i = 0; i < list.size(); i++) {
+
+			// list.remove(i--);
+
 		}
 
-		//출력
-		for(int i = 0;i<list.size();i++) {
+		// 출력
+		for (int i = 0; i < list.size(); i++) {
 			Product temp = list.get(i);
 			System.out.println(temp);
 		}
-		
-		//enhanced for loop 출력가능(제너릭으로 선언한 경우만 가능)
+
+		// enhanced for loop 출력가능(제너릭으로 선언한 경우만 가능)
 		for (Product product : list) {
-			System.out.println(product);
+			// System.out.println(product);
+		}
+
+		for (Product product : list) {
+			if (product.number == 3) {
+				product.price = 3500;
+			}
+
+			for (int i = 0; i < list.size(); i++) {
+				Product temp = list.get(i);
+				System.out.println(temp);
+			}
+
 		}
 	}
 }
