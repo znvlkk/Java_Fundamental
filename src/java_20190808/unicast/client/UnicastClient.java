@@ -1,4 +1,4 @@
-package java_20190807.unicast.clinet;
+package java_20190808.unicast.client;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -6,6 +6,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.Socket;
+import java.net.UnknownHostException;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,6 +31,8 @@ public class UnicastClient implements ActionListener {
 	private JTextArea jta;
 	private JTextField jtf;
 	private JButton jbtn;
+	private BufferedReader br;
+	private BufferedWriter bw;
 
 	public UnicastClient(String id, String ip, int port) {
 		this.id = id;
@@ -58,7 +67,7 @@ public class UnicastClient implements ActionListener {
 		j2.setLayout(new BorderLayout());
 		j2.add(jl1, BorderLayout.CENTER);
 		j2.add(jl2, BorderLayout.EAST);
-		j2.setBackground(new Color(123,123,123));
+		j2.setBackground(new Color(123, 123, 123));
 		// ****************상단끝******************
 
 		jframe.add(jsp, BorderLayout.CENTER);
@@ -72,7 +81,19 @@ public class UnicastClient implements ActionListener {
 		// x(종료)를 눌렀을때 프로그램을 종료하기 위한 코드
 		jframe.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent e) {
-				System.exit(0);
+				// System.exit(0);
+				try {
+					bw.write("종료합니다\n");
+					bw.flush();
+					String readLine = br.readLine();
+					if (readLine.equals("shut down")) {
+						close();
+						System.exit(0);
+					}
+				} catch (IOException e1) {
+					// TODO: handle exception
+					e1.printStackTrace();
+				}
 			}
 
 			public void windowOpened(WindowEvent e) {
@@ -82,11 +103,6 @@ public class UnicastClient implements ActionListener {
 
 		jbtn.addActionListener(this);
 		jtf.addActionListener(this);
-	}
-
-	public static void main(String[] args) {
-		JFrame.setDefaultLookAndFeelDecorated(true);
-		new UnicastClient("syh1011", "127.0.0.1", 5000);
 	}
 
 	@Override
@@ -99,10 +115,18 @@ public class UnicastClient implements ActionListener {
 			String message = jtf.getText();
 			if (message.trim().length() == 0) {
 				JOptionPane.showMessageDialog(jframe, "야...", "Warning", JOptionPane.ERROR_MESSAGE);
-				jtf.setText("");
 			} else {
+				try {
+					bw.write(id + " : " + message + "\n");
+					bw.flush();
+					String readLine = br.readLine();
+					jta.append(readLine + "\n");
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				// 텍스트 에어리어에 추가하기
-				jta.append(id + " : " + message + "\n");
+				// jta.append(id + " : " + message + "\n");
 				// 텍스트 필드에 입력된 값 없애기
 				jtf.setText("");
 			}
@@ -121,5 +145,36 @@ public class UnicastClient implements ActionListener {
 			jtf.requestFocus();
 
 		}
+	}
+
+	private void close() {
+		try {
+			if (bw != null)
+				bw.close();
+			if (br != null)
+				br.close();
+		} catch (IOException e2) {
+
+		}
+	}
+
+	public void connect() {
+		try {
+			Socket socket = new Socket(ip, port);
+			bw = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+		} catch (UnknownHostException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
+	public static void main(String[] args) {
+		JFrame.setDefaultLookAndFeelDecorated(true);
+		new UnicastClient("z", "192.168.0.52", 5000).connect();
+		;
 	}
 }
